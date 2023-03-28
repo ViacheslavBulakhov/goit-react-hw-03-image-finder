@@ -28,6 +28,7 @@ export class App extends React.Component {
     const { page, searchQuery } = this.state;
     if (searchQuery !== prevState.searchQuery || page !== prevState.page) {
       this.setState({ status: 'pending' });
+      animateScroll.scrollToBottom({ smooth: 'behavior' });
       this.getImages();
     }
   }
@@ -38,6 +39,7 @@ export class App extends React.Component {
         page: this.state.page,
         searchQuery: this.state.searchQuery,
       });
+      console.log(newImages);
 
       if (newImages.hits.length === 0) {
         Notiflix.Notify.failure(
@@ -51,10 +53,11 @@ export class App extends React.Component {
 
       const lastPage = Math.ceil(newImages.totalHits / 12);
       const images = newImages.hits.map(
-        ({ webformatURL, id, largeImageURL }) => ({
+        ({ webformatURL, id, largeImageURL, tags }) => ({
           webformatURL,
           id,
           largeImageURL,
+          tags,
         })
       );
 
@@ -93,7 +96,6 @@ export class App extends React.Component {
 
   onLoadMore = () => {
     this.setState(prevState => ({ page: prevState.page + 1 }));
-    animateScroll.scrollToBottom({ smooth: 'behavior' });
   };
 
   toggleModal = (largeUrl = '') => {
