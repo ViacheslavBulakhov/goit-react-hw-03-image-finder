@@ -39,7 +39,6 @@ export class App extends React.Component {
         page: this.state.page,
         searchQuery: this.state.searchQuery,
       });
-      console.log(newImages);
 
       if (newImages.hits.length === 0) {
         Notiflix.Notify.failure(
